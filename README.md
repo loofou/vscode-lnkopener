@@ -1,71 +1,47 @@
-# lnkopener README
+# LnkOpener
 
-This is the README for your extension "lnkopener". After writing up a brief description, we recommend including the following sections.
+A small Visual Studio Code extension that helps you open Windows `.lnk` (shortcut) files in their target applications.
+
+When you click a `.lnk` in the Explorer or use the command, the extension resolves the shortcut and opens the underlying target with the OS default program (for folders: Explorer, for documents: Word/Excel/other registered apps, etc.).
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Resolve `.lnk` shortcuts on Windows and open the resolved target externally.
+- Support for shortcuts that include program arguments (the extension will spawn executables with their arguments when appropriate).
+- Explorer context menu command: `Open .lnk target` (right-click a `.lnk` file in Explorer).
+## Requirements & Platform
 
-For example if there is an image subfolder under your extension project workspace:
+- This extension only supports Windows because it uses PowerShell and the WScript.Shell COM object to read `.lnk` properties.
+- PowerShell must be available on PATH (standard on modern Windows). The extension runs PowerShell commands locally to read the shortcut TargetPath and Arguments.
 
-\!\[feature X\]\(images/feature-x.png\)
+## Install & Run (development)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+1. Install dependencies and build the extension:
 
-## Requirements
+```bash
+npm install
+npm run compile
+```
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+2. Launch the Extension Development Host (press F5 in VS Code). In the dev host:
 
-## Extension Settings
+- Click a `.lnk` in the Explorer to open its target externally.
+- Or right-click a `.lnk` and choose `Open .lnk target`.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+## Usage
 
-For example:
+- Clicking a `.lnk` file in Explorer (inside VS Code) will open the resolved target and the `.lnk` editor will be closed automatically.
+- Use the command palette (Ctrl+Shift+P) and run `Open .lnk target` to open the selected `.lnk` file.
+- Right-click a `.lnk` in Explorer and select `Open .lnk target` from the context menu.
 
-This extension contributes the following settings:
+## Limitations & Notes
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+- Windows-only: The extension shows a warning on non-Windows platforms.
+- The extension resolves `TargetPath` and `Arguments` from the shortcut. If the shortcut points to another shortcut or an unusual target, results may vary.
 
-## Known Issues
+## Troubleshooting
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- If opening the target doesn't work:
+	- Ensure you are running in Windows and PowerShell is available on PATH.
+	- Check that the `.lnk` file is a valid Windows shortcut and not corrupted.
+	- If a shortcut points to an executable with spaces, the extension attempts to handle quoted and unquoted paths, but very unusual cases may fail.

@@ -2,20 +2,59 @@
   "name": "lnkopener",
   "displayName": "LnkOpener",
   "description": "A simple extension to open .lnk files in windows in their respective programs.",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "publisher": "loofou",
   "engines": {
     "vscode": "^1.105.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loofou/vscode-lnkopener"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "lnkopener.helloWorld",
-        "title": "Hello World"
+        "command": "lnkopener.openLnk",
+        "title": "Open .lnk target"
+      }
+    ],
+    "languages": [
+      {
+        "id": "lnk",
+        "extensions": [
+          ".lnk"
+        ],
+        "aliases": ["lnk"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "lnkopener.openLnk",
+          "when": "resourceExtname == .lnk",
+          "group": "navigation"
+        }
+      ]
+    }
+    ,
+    "customEditors": [
+      {
+        "viewType": "lnkopener.lnkPreview",
+        "displayName": "LnkOpener preview",
+        "priority": "default",
+        "selector": [
+          {
+            "filenamePattern": "*.lnk"
+          }
+        ]
       }
     ]
   },
